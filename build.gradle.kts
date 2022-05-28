@@ -50,7 +50,7 @@ configure<SpotlessExtension> {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation(gradleApi())
+    compileOnly(gradleApi())
     implementation("org.gradle:gradle-tooling-api:$gradleToolingApiVersion")
     implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 }
@@ -61,4 +61,17 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType<Jar> {
+    from(configurations.compileClasspath.get().map {
+        if (it.isDirectory) {
+            println("Directory: $it")
+            it
+        } else {
+            println("File: $it")
+            zipTree(it)
+        }
+    })
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
