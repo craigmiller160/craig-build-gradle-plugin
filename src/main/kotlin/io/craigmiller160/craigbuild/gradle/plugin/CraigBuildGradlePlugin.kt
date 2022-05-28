@@ -10,7 +10,6 @@ class CraigBuildGradlePlugin
 @Inject
 constructor(private val registry: ToolingModelBuilderRegistry) : Plugin<Project> {
   override fun apply(target: Project) {
-    println("Foo222")
     registry.register(CraigBuildModelBuilder())
   }
 }
