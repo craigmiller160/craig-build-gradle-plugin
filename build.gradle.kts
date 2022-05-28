@@ -44,16 +44,16 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task("installGitHooks") {
-    val hooksDevDir = Paths.get(rootProject.rootDir.absolutePath, "hooks")
-    val hooksGitDir = Paths.get(rootProject.rootDir.absolutePath, ".git", "hooks")
-    runCatching {
-        Files.list(hooksDevDir)
-            .forEach { hookPath ->
-                val hookGitPath = hooksGitDir.resolve(hookPath.fileName)
-                Files.copy(hookPath, hookGitPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
-            }
-    }
-}
+//task("installGitHooks") {
+//    val hooksDevDir = Paths.get(rootProject.rootDir.absolutePath, "hooks")
+//    val hooksGitDir = Paths.get(rootProject.rootDir.absolutePath, ".git", "hooks")
+//    runCatching {
+//        Files.list(hooksDevDir)
+//            .forEach { hookPath ->
+//                val hookGitPath = hooksGitDir.resolve(hookPath.fileName)
+//                Files.copy(hookPath, hookGitPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
+//            }
+//    }
+//}
 
-tasks.getByPath("compileKotlin").dependsOn("installGitHooks")
+//tasks.getByPath("compileKotlin").dependsOn("installGitHooks")
