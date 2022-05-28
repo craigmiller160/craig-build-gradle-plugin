@@ -1,5 +1,8 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 
 val slf4jVersion = "1.7.36"
 val gradleToolingApiVersion = "7.4.2"
@@ -39,3 +42,16 @@ tasks.test {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+task("installGitHook") {
+    val startPath = Paths.get(rootProject.rootDir.absolutePath, "hooks", "pre-commit")
+    val endPath = Paths.get(rootProject.rootDir.absolutePath, ".git", "hooks", "pre-commit")
+    try {
+        Files.copy(startPath, endPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
+    } catch (ex: Exception) {
+        ex.printStackTrace()
+    }
+
+}
+
+tasks.getByPath("compileKotlin").dependsOn("installGitHook")
