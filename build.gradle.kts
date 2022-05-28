@@ -19,9 +19,8 @@ repositories {
     }
 }
 
-configure<SpotlessExtension>() {
+configure<SpotlessExtension> {
     kotlin {
-        target("src/main/kotlin/**/*.kt", "src/test/kotlin/**/*.kt")
         ktfmt()
     }
 }
