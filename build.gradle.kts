@@ -1,3 +1,4 @@
+import com.diffplug.gradle.spotless.SpotlessExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val slf4jVersion = "1.7.36"
@@ -5,6 +6,7 @@ val gradleToolingApiVersion = "7.4.2"
 
 plugins {
     kotlin("jvm") version "1.6.20"
+    id("com.diffplug.spotless") version "6.6.1"
 }
 
 group = "io.craigmiller160"
@@ -14,6 +16,13 @@ repositories {
     mavenCentral()
     maven {
         url = uri("https://repo.gradle.org/gradle/libs-releases")
+    }
+}
+
+configure<SpotlessExtension>() {
+    kotlin {
+        target("src/main/kotlin/**/*.kt", "src/test/kotlin/**/*.kt")
+        ktfmt()
     }
 }
 
