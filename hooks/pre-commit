@@ -12,7 +12,6 @@ if [ $status -ne 0 ]; then
 fi
 
 for file in $files; do
-  echo $file
   git add $file
 done
 
