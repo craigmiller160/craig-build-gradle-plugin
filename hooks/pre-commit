@@ -12,7 +12,7 @@ if [ $status -ne 0 ]; then
 fi
 
 for file in $files; do
-  git add file
+  git add $file
 done
 
 exit 0
