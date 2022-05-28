@@ -1,9 +1,5 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
-import kotlin.streams.asSequence
 
 val slf4jVersion = "1.7.36"
 val gradleToolingApiVersion = "7.4.2"
