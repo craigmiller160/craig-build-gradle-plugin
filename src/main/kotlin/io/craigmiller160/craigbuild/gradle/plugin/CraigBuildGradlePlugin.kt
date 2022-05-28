@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 class CraigBuildGradlePlugin @Inject constructor(private val registry: ToolingModelBuilderRegistry): Plugin<Project> {
     override fun apply(target: Project) {
+        println("Foo")
         registry.register(CraigBuildModelBuilder())
     }
 }
