@@ -7,10 +7,33 @@ val gradleToolingApiVersion = "7.4.2"
 plugins {
     kotlin("jvm") version "1.6.20"
     id("com.diffplug.spotless") version "6.6.1"
+    `maven-publish`
 }
 
 group = "io.craigmiller160"
 version = "1.0.0-SNAPSHOT"
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = rootProject.name
+            version = project.version.toString()
+
+            from(components["kotlin"])
+        }
+    }
+    repositories {
+        maven {
+            val repo = if (project.version.toString().endsWith("-SNAPSHOT")) "maven-snapshots" else "maven-releases"
+            url = uri("https://craigmiller160.ddns.net:30003/repository/$repo")
+            credentials {
+                username = System.getenv("NEXUS_USER")
+                password = System.getenv("NEXUS_PASSWORD")
+            }
+        }
+    }
+}
 
 repositories {
     mavenCentral()
@@ -39,17 +62,3 @@ tasks.test {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
-
-//task("installGitHooks") {
-//    val hooksDevDir = Paths.get(rootProject.rootDir.absolutePath, "hooks")
-//    val hooksGitDir = Paths.get(rootProject.rootDir.absolutePath, ".git", "hooks")
-//    runCatching {
-//        Files.list(hooksDevDir)
-//            .forEach { hookPath ->
-//                val hookGitPath = hooksGitDir.resolve(hookPath.fileName)
-//                Files.copy(hookPath, hookGitPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
-//            }
-//    }
-//}
-
-//tasks.getByPath("compileKotlin").dependsOn("installGitHooks")
