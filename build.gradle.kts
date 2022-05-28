@@ -66,5 +66,5 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Jar> {
     from(configurations.compileClasspath.get()
         .map { if (it.isDirectory) it else zipTree(it) })
-    duplicatesStrategy = DuplicatesStrategy.INHERIT
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
