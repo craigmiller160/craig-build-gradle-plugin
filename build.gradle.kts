@@ -46,12 +46,9 @@ tasks.withType<KotlinCompile> {
 task("installGitHook") {
     val startPath = Paths.get(rootProject.rootDir.absolutePath, "hooks", "pre-commit")
     val endPath = Paths.get(rootProject.rootDir.absolutePath, ".git", "hooks", "pre-commit")
-    try {
-        Files.copy(startPath, endPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
-    } catch (ex: Exception) {
-        ex.printStackTrace()
-    }
-
+    runCatching { Files.copy(startPath, endPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES) }
+        .onFailure { it.printStackTrace() }
+        .getOrThrow()
 }
 
 tasks.getByPath("compileKotlin").dependsOn("installGitHook")
