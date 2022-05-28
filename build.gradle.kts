@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
+import kotlin.streams.asSequence
 
 val slf4jVersion = "1.7.36"
 val gradleToolingApiVersion = "7.4.2"
@@ -43,12 +44,16 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task("installGitHook") {
-    val startPath = Paths.get(rootProject.rootDir.absolutePath, "hooks", "pre-commit")
-    val endPath = Paths.get(rootProject.rootDir.absolutePath, ".git", "hooks", "pre-commit")
-    runCatching { Files.copy(startPath, endPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES) }
-        .onFailure { it.printStackTrace() }
-        .getOrThrow()
+task("installGitHooks") {
+    val hooksDevDir = Paths.get(rootProject.rootDir.absolutePath, "hooks")
+    val hooksGitDir = Paths.get(rootProject.rootDir.absolutePath, ".git", "hooks")
+    runCatching {
+        Files.list(hooksDevDir)
+            .forEach { hookPath ->
+                val hookGitPath = hooksGitDir.resolve(hookPath.fileName)
+                Files.copy(hookPath, hookGitPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
+            }
+    }
 }
 
-tasks.getByPath("compileKotlin").dependsOn("installGitHook")
+tasks.getByPath("compileKotlin").dependsOn("installGitHooks")
