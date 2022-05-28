@@ -62,9 +62,3 @@ tasks.test {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
-
-tasks.withType<Jar> {
-    from(configurations.compileClasspath.get()
-        .map { if (it.isDirectory) it else zipTree(it) })
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
