@@ -5,7 +5,7 @@ val slf4jVersion = "1.7.36"
 val gradleToolingApiVersion = "8.0.2"
 
 plugins {
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.8.10"
     id("com.diffplug.spotless") version "6.6.1"
     `maven-publish`
 }
